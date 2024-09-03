@@ -12,8 +12,8 @@ bool del(int x){
     ui tmp;
     ui bound = 0;
     while(k<count){
-        tmp1 = decode(currbit);
-        tmp2 = decode(currbit);
+        tmp1 = decode(currbit,f);
+        tmp2 = decode(currbit,f);
         ending-= tmp1;
         ending-= tmp2;
         if(flag){
@@ -41,18 +41,24 @@ bool del(int x){
 }
 
 bool delete(byte* name){
-    ui len = strlen(name);
-    i=2;
+    ui len  = strlen(name);
+    byte* buffer  = (byte*) malloc(sizeof(byte)*50);
+    fseek(f,2,SEEK_SET);
     currbit = 8;
     ui cnt = count;
-    ui ending = FILESIZE;
+    ul ending = 2;
     ui tmp;
+    ul tmpPos;
     while(cnt--){
-        tmp = decode(currbit);
-        ending-=tmp;
-        ending-=decode(currbit);
-        if(strncmp(disk+ending,name,len)==0){
-            return del(count-cnt);
+        tmp = decode(currbit,f);
+        ending+=tmp;
+        ending+=decode(currbit,f);
+        if(tmp == len){
+            tmpPos = ftell(f);
+            fseek(f,-ending,SEEK_END);
+            fgets(buffer,len+1,f);
+            if(strncmp(buffer,name,len)==0)return view(count-cnt);
+            fseek(f,tmpPos,SEEK_SET);
         }
     }
     return false;

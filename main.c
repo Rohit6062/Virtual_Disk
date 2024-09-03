@@ -4,9 +4,30 @@
 #include"add.c"
 #include"get.c"
 #include"ls.c"
-#include"delete.c"
+#include"filescnt.c"
+// #include"delete.c"
+
+// int main(){
+//     init();
+//     long k;
+//     currbit = 8;
+    // for(int i=0;i<64;i++)encode(f,(long)pow(2,i),currbit);
+    
+    // fseek(f,0,SEEK_SET);
+    // currbit=8;
+    // for(int i=0;i<64;i++)k = decode(currbit,f),printf("k = %ld\n", k);;
+    // currbit=8;
+    // add("name.txt",strlen("name.txt"),"Have you finished eating your apple.",strlen("Have you finished eating your apple.")),add("name.txt",strlen("name.txt"),"Have you finished eating your apple.",strlen("Have you finished eating your apple.")),add("name.txt",strlen("name.txt"),"Have you finished eating your apple.",strlen("Have you finished eating your apple."));
+    // printf("get(name.txt) = %d\n", get("name.txt"));
+    // ls();
+    // save();
+// }
+//
+//
 int main(){
     init();
+    count = filesCnt(f);
+    printf("count = %d\n", count);
     int inp=9;
     FILE* fp;
     int len;
@@ -28,12 +49,7 @@ int main(){
                     printf("Failed to open File\n");
                     break;
                 }
-                fseek(fp,0,SEEK_END);
-                len = ftell(fp);
-                fseek(fp,0,SEEK_SET);
-                fa = realloc(fa, sizeof(byte)*len);
-                fread(fa,sizeof(byte),len,fp);
-                if(add(name,strlen(name),fa,len)==false){
+                if(add(name,fp)==false){
                     printf("Failed to Insert file\n");
                 }
                 else{
@@ -48,7 +64,7 @@ int main(){
             case 3:
                 printf("Enter file name: ");
                 scanf("%s",name);
-                delete(name);
+                // delete(name);
                 break;
             case 4:
                 ls();
@@ -57,6 +73,7 @@ int main(){
                 printf("Please choose a valid Option !!!\n");
                 break;
         }
+        fflush(NULL);
     }
     return 0;
 }

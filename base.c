@@ -8,16 +8,7 @@ typedef unsigned char byte;
 typedef short unsigned int si;
 typedef unsigned int ui;
 typedef unsigned long ul;
-// Vdisk structure
-// count ,[(lenght,object)];
-// short int count
-// int length ;
-// where length is sizeof object in bytes
 
-
-/*
- * exv = extracting varibale for bits
- * */
 si count;
 FILE* f;
 byte* disk;
@@ -84,15 +75,10 @@ void init(){
     fseek(f,0,SEEK_END);
     FILESIZE = ftell(f);
     fseek(f,0,SEEK_SET);
-    disk = (byte*) malloc(sizeof(byte)*FILESIZE);
-    if(fread(disk,sizeof(disk[0]),FILESIZE,f)!=FILESIZE)printf("something is wrong\n"),exit(0);
-    count = (disk[0] << 8 )| disk[1];
-    printf("Number of Files Stored = %d\n", count);
+    // printf("Number of Files Stored = %d\n", count);
 }
 void save(){
     fseek(f,0,SEEK_SET);
-    disk[0] = count >> 8;
-    disk[1] = count ;
-    fwrite(disk,sizeof(disk[0]),FILESIZE,f);
+    // fwrite(&count,sizeof(count),1,f);
     fclose(f);
 }

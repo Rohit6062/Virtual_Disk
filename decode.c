@@ -1,14 +1,14 @@
-long decode(byte pos){
-    read = disk[i++];
-    if(pos==0)read = disk[i++],pos=8;
+long decode(byte pos,FILE* f){
+    read = getc(f);
+    if(pos==0)read = fgetc(f),pos=8;
     byte lvl ;
     long output=0;
     long toget = 2;
     if(pos<3){
-        if(pos==2) lvl = (3 & read) << 1 , read = disk[i++], lvl = lvl | (1 & (read >> 7)) , pos = 7;  
-        else lvl =  (1 & read) << 2 , read = disk[i++] , lvl = lvl | (3 & (read >> 6)), pos = 6;
+        if(pos==2) lvl = (3 & read) << 1 , read = getc(f), lvl = lvl | (1 & (read >> 7)) , pos = 7;  
+        else lvl =  (1 & read) << 2 , read = getc(f) , lvl = lvl | (3 & (read >> 6)), pos = 6;
     } 
-    else lvl = 7 & (read >> (pos - 3)), pos-=3;if(!pos)pos=8,read = disk[i++]; 
+    else lvl = 7 & (read >> (pos - 3)), pos-=3;if(!pos)pos=8,read = getc(f);
     while(lvl--){
         output = 0;
         while(toget){
@@ -23,14 +23,12 @@ long decode(byte pos){
                 if(toget>8)output = output << 8;
                 else output = output << toget;
                 pos = 8;
-                read = disk[i++];
+                read = getc(f);
             }
         }
         toget = output;
     }
-    i--;
+    fseek(f,-1,SEEK_CUR);
     currbit = pos;
     return output;
 }
-
-
