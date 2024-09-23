@@ -1,7 +1,8 @@
+#include"vdisk_header.h"
 bool del(int x){
     if(x>count)return false;
     i=2;
-    currbit=8;
+    byte currbit=8;
     ui *arr1 = (ui*) calloc(sizeof(ui),count-1);
     ui *arr2 = (ui*) calloc(sizeof(ui),count-1);
     ui k =0;
@@ -19,7 +20,6 @@ bool del(int x){
         if(flag){
             tmp = ending+tmp1+tmp2-1;
             int l=0;
-            // while(tmp2>=ending)printf("%c", disk[tmp2--]);
             while(tmp >= ending)disk[tmp+bound] = disk[tmp],tmp--;
         }
         else if((k+1)==x){

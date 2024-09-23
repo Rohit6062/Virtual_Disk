@@ -1,23 +1,5 @@
+#include"vdisk_header.h"
 #include<stdio.h>
-#include<math.h>
-#include<stdlib.h>
-#include<limits.h>
-#include<stdbool.h>
-#include<string.h>
-typedef unsigned char byte;
-typedef short unsigned int si;
-typedef unsigned int ui;
-typedef unsigned long ul;
-
-si count;
-FILE* f;
-byte* disk;
-ul currByte;
-byte read;
-ui i=0;
-byte currbit=8;
-ui FILESIZE;
-
 long log_2(unsigned long x){
     long output=0;
     while(x){
@@ -70,15 +52,20 @@ void pb(byte val){
 } 
 
 
-void init(){ 
-    f = fopen("disk","r+");
-    fseek(f,0,SEEK_END);
-    FILESIZE = ftell(f);
-    fseek(f,0,SEEK_SET);
-    // printf("Number of Files Stored = %d\n", count);
+diskinfo* init(){ 
+    diskinfo* vdisk =(diskinfo*) malloc(sizeof(diskinfo)); 
+    vdisk->f = fopen("disk","r+");
+    fseek(vdisk->f,0,SEEK_END);
+    vdisk->fileSize = ftell(vdisk->f);
+    vdisk->count = filesCnt(vdisk);
+    fseek(vdisk->f,0,SEEK_SET);
+    vdisk->currBit = 8;
+    return vdisk;
 }
-void save(){
+void save(FILE* f){
     fseek(f,0,SEEK_SET);
     // fwrite(&count,sizeof(count),1,f);
     fclose(f);
 }
+
+

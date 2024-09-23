@@ -1,33 +1,7 @@
-#include"base.c"
-#include"encode.c"
-#include"decode.c"
-#include"add.c"
-#include"get.c"
-#include"ls.c"
-#include"filescnt.c"
-// #include"delete.c"
-
-// int main(){
-//     init();
-//     long k;
-//     currbit = 8;
-    // for(int i=0;i<64;i++)encode(f,(long)pow(2,i),currbit);
-    
-    // fseek(f,0,SEEK_SET);
-    // currbit=8;
-    // for(int i=0;i<64;i++)k = decode(currbit,f),printf("k = %ld\n", k);;
-    // currbit=8;
-    // add("name.txt",strlen("name.txt"),"Have you finished eating your apple.",strlen("Have you finished eating your apple.")),add("name.txt",strlen("name.txt"),"Have you finished eating your apple.",strlen("Have you finished eating your apple.")),add("name.txt",strlen("name.txt"),"Have you finished eating your apple.",strlen("Have you finished eating your apple."));
-    // printf("get(name.txt) = %d\n", get("name.txt"));
-    // ls();
-    // save();
-// }
-//
-//
+#include"vdisk_header.h"
 int main(){
-    init();
-    count = filesCnt(f);
-    printf("count = %d\n", count);
+    diskinfo* vdisk = init(); 
+    // printf("count = %d\n", vdisk->count);
     int inp=9;
     FILE* fp;
     int len;
@@ -39,7 +13,8 @@ int main(){
         switch(inp){
             case 0:
                 printf("\n\tbye :(\n");
-                save();
+                save(vdisk->f);
+                // fclose(f);
                 break;
             case 1:
                 printf("Enter file name: ");
@@ -49,7 +24,7 @@ int main(){
                     printf("Failed to open File\n");
                     break;
                 }
-                if(add(name,fp)==false){
+                if(add(vdisk,name,fp)==false){
                     printf("Failed to Insert file\n");
                 }
                 else{
@@ -59,7 +34,7 @@ int main(){
             case 2:
                 printf("Enter file name: ");
                 scanf("%s",name);
-                if(get(name)==false)printf("No such File\n");
+                if(get(vdisk,name)==false)printf("No such File\n");
                 break;
             case 3:
                 printf("Enter file name: ");
@@ -67,7 +42,7 @@ int main(){
                 // delete(name);
                 break;
             case 4:
-                ls();
+                ls(vdisk);
                 break;
             default:
                 printf("Please choose a valid Option !!!\n");
@@ -75,6 +50,14 @@ int main(){
         }
         fflush(NULL);
     }
+    // for(int i=1;i<10000000;i++)
+        // printf("encode %d %d\n",30770220, encode(vdisk,3077020)),
+        // printf("encode %d %d\n",30770220, encode(vdisk,3077020));
+
+        // fseek(vdisk->f,0,SEEK_SET),
+        // vdisk->currBit = 8;
+    // for(int i=0;i<10000000;i++)
+        // printf("decode(vdisk) = %ld\n", decode(vdisk)),
+        // printf("decode(vdisk) = %ld\n", decode(vdisk));
     return 0;
 }
-

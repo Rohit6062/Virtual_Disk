@@ -1,34 +1,35 @@
-long decode(byte pos,FILE* f){
-    read = getc(f);
-    if(pos==0)read = fgetc(f),pos=8;
-    byte lvl ;
+#include"vdisk_header.h"
+long decode(diskinfo* vdisk){
+    byte read = getc(vdisk->f);
+    if(vdisk->currBit==0)read = fgetc(vdisk->f),vdisk->currBit=8;
+    byte lvl;
     long output=0;
     long toget = 2;
-    if(pos<3){
-        if(pos==2) lvl = (3 & read) << 1 , read = getc(f), lvl = lvl | (1 & (read >> 7)) , pos = 7;  
-        else lvl =  (1 & read) << 2 , read = getc(f) , lvl = lvl | (3 & (read >> 6)), pos = 6;
+    if(vdisk->currBit<3){
+        if(vdisk->currBit==2) lvl = (3 & read) << 1 , read = getc(vdisk->f), lvl = lvl | (1 & (read >> 7)) , vdisk->currBit = 7;  
+        else lvl =  (1 & read) << 2 , read = getc(vdisk->f) , lvl = lvl | (3 & (read >> 6)), vdisk->currBit = 6;
     } 
-    else lvl = 7 & (read >> (pos - 3)), pos-=3;if(!pos)pos=8,read = getc(f);
+    else lvl = 7 & (read >> (vdisk->currBit - 3)), vdisk->currBit= vdisk->currBit-3;
+    if(vdisk->currBit==0)vdisk->currBit=8,read = getc(vdisk->f);
     while(lvl--){
         output = 0;
         while(toget){
-            if(toget<pos){
-                output = output | (makeToget(toget) & (read >> (pos-toget)));  
-                pos = pos-toget;
+            if(toget<vdisk->currBit){
+                output = output | (makeToget(toget) & (read >> (vdisk->currBit-toget)));  
+                vdisk->currBit = vdisk->currBit-toget;
                 toget = 0;
             }
             else{
-                output = output |  (makeToget(pos) & read );
-                toget -= pos;
+                output = output |  (makeToget(vdisk->currBit) & read );
+                toget -= vdisk->currBit;
                 if(toget>8)output = output << 8;
                 else output = output << toget;
-                pos = 8;
-                read = getc(f);
+                vdisk->currBit = 8;
+                read = getc(vdisk->f);
             }
         }
         toget = output;
     }
-    fseek(f,-1,SEEK_CUR);
-    currbit = pos;
+    fseek(vdisk->f,-1,SEEK_CUR);
     return output;
 }

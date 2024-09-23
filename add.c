@@ -1,70 +1,36 @@
-bool add(byte* name,FILE* toadd){
-    fseek(f,0,SEEK_SET);
+#include"vdisk_header.h"
+bool add(diskinfo* vdisk,byte* name,FILE* toadd){
+    fseek(vdisk->f,0,SEEK_SET);
+    vdisk->currBit=8;
     int nlen = strlen(name);
     fseek(toadd,0,SEEK_END);
     int len = ftell(toadd);
     fseek(toadd,0,SEEK_SET);
-    currbit=8;
-    int tot=0; // total bytes including bits needed in encoding
-    int tmp; // helper variable
-    int cnt = count*2; // count of files and there names in disk
-    unsigned long totUsed=0; // total bytes where actual data is stored
+    ul tot=0; // total bytes including bits needed in encoding
+    ul tmp; // helper variable
+    ui cnt = vdisk->count * 2; // count of files and there names in disk
+    ul totUsed=0; // total bytes where actual data is stored
     byte* buffer = (byte*) calloc(10240, sizeof(byte)); 
     int buflen = 10240;
+    // posinfo currinfo = {8,8};
     while(cnt--){
-        tmp=decode(currbit,f);
+        tmp = decode(vdisk);
         totUsed += tmp;
         tot += getBitReq(tmp);
     }
     tot = ceil((float)tot/8) + totUsed;
-    if((len+nlen) > (FILESIZE - tot - 2))return false;
-    encode(f,nlen,currbit);
-    encode(f,len,currbit);
+    if((len+nlen) > (vdisk->fileSize - tot - 2))return 0;
+    if(!encode(vdisk,nlen))return false;
+    if(!encode(vdisk,len))return false;
     int k=0;
-    fseek(f,-nlen-len-totUsed-2,SEEK_END);
-    fwrite(name,1,nlen,f);
+    fseek(vdisk->f,-nlen-len-totUsed-2,SEEK_END);
+    fwrite(name,1,nlen,vdisk->f);
     while(len>0){
         if(len<buflen)buflen=len;
         fread(buffer,1,buflen,toadd);
-        fwrite(buffer,1,buflen,f);
+        fwrite(buffer,1,buflen,vdisk->f);
         len-=buflen;
     }
-    count = count + 1;
+    vdisk->count = vdisk->count + 1;
     return true;
 }
-// bool add(byte* name,int nlen,byte* data, int len){
-//     fseek(f,0,SEEK_SET);
-//     currbit=8;
-//     int tot=0; // total bytes including bits needed in encoding
-//     int tmp; // helper variable
-//     int cnt = count*2; // count of files and there names in disk
-//     unsigned long totUsed=0; // total bytes where actual data is stored
-//     while(cnt--){
-//         tmp=decode(currbit,f);
-//         totUsed += tmp;
-//         tot += getBitReq(tmp);
-//     }
-//     tot = ceil((float)tot/8) + totUsed;
-//     if((len+nlen) > (FILESIZE - tot - 2))return false;
-//     encode(f,nlen,currbit);
-//     encode(f,len,currbit);
-//     int k=0;
-//     int bound = FILESIZE - nlen - len - totUsed;
-//     fseek(f,-nlen-len-totUsed-2,SEEK_END);
-//     fwrite(name,1,nlen,f);
-//     fwrite(data,1,len,f);
-//     // while(k < nlen)
-//     // {
-//         // putc(name[k],f);
-//         // k++;
-//     // }
-//     bound += nlen;
-//     k=0;
-//     while(k<len)
-//     {
-//         // putc(data[k],f);
-//         k++;
-//     }
-//     count = count + 1;
-//     return true;
-// }
