@@ -1,9 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 int main(){
-    FILE* f = fopen("vish","r+");
-    printf("ftell(f) = %ld\n", ftell(f));
-    fseek(f,1,SEEK_SET);
-    printf("getc(f) = %c\n", getc(f));
+    printf("enter ");
+    char s[10000];
+    fgets(s,10000,stdin);
+    printf("%s",s);
     return 0;
 }

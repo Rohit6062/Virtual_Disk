@@ -2,30 +2,22 @@
 bool view(diskinfo* vdisk,ui n){
     fseek(vdisk->f,0,SEEK_SET);
     vdisk->currBit=8;
-    if(vdisk->count < n)return false;
-    int tmp = n;
-    int nlen=0;
-    int len=0;
-    int bound=0;
+    int tmp = n ,nlen=0 ,len=0 ,bound=0;
+    byte* buffer = (byte*) malloc(sizeof(byte)*50);
     while(tmp--){
         nlen = decode(vdisk);
         len= decode(vdisk);
         bound += nlen + len;
     }
-    tmp = 0;
     fseek(vdisk->f,-bound-2,SEEK_END);
-    while(tmp < nlen){
-        printf("%c",getc(vdisk->f));
-        tmp++;
-    }
-    printf(" \n");
-    bound -= nlen;
+    fgets(buffer,nlen+1,vdisk->f);
+    printf("%s \n",buffer);
     tmp = 0;
     while(tmp < len){
         printf("%c",getc(vdisk->f));
         tmp++;
     }
-    printf(" \n");
+    printf("\n");
     return true;
 }
 

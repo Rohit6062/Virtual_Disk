@@ -17,15 +17,6 @@ typedef struct diskinfo{
     ui fileSize;
 }diskinfo;
 
-// si count;
-// FILE* f;
-// byte* disk;
-// ul currByte;
-// byte read;
-// ui i=0;
-// byte currbit=8;
-// ui FILESIZE;
-
 long decode(diskinfo*);
 bool encode(diskinfo* ,unsigned long);
 bool add(diskinfo* ,byte*,FILE*);
@@ -43,3 +34,4 @@ long makeToget(long);
 void pb(byte);
 diskinfo* init(); 
 void save(FILE*);
+void accept(diskinfo*,byte*);

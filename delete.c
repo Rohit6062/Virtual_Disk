@@ -1,7 +1,7 @@
 #include"vdisk_header.h"
-bool del(int x){
+bool del(diskinfo* vdisk,int x){
     if(x>count)return false;
-    i=2;
+    
     byte currbit=8;
     ui *arr1 = (ui*) calloc(sizeof(ui),count-1);
     ui *arr2 = (ui*) calloc(sizeof(ui),count-1);

@@ -18,8 +18,8 @@ bool add(diskinfo* vdisk,byte* name,FILE* toadd){
         totUsed += tmp;
         tot += getBitReq(tmp);
     }
-    tot = ceil((float)tot/8) + totUsed;
-    if((len+nlen) > (vdisk->fileSize - tot - 2))return 0;
+    tot = tot + totUsed*8;
+    if((len*8+nlen*8) > (vdisk->fileSize*8 - tot - 16))return 0;
     if(!encode(vdisk,nlen))return false;
     if(!encode(vdisk,len))return false;
     int k=0;
