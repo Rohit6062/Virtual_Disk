@@ -1,65 +1,45 @@
 #include"vdisk_header.h"
-bool del(diskinfo* vdisk,int x){
-    if(x>count)return false;
-    
-    byte currbit=8;
-    ui *arr1 = (ui*) calloc(sizeof(ui),count-1);
-    ui *arr2 = (ui*) calloc(sizeof(ui),count-1);
-    ui k =0;
-    ui ending = FILESIZE;
-    bool flag=false;
-    ul tmp1;
-    ul tmp2;
-    ui tmp;
-    ui bound = 0;
-    while(k<count){
-        tmp1 = decode(currbit,f);
-        tmp2 = decode(currbit,f);
-        ending-= tmp1;
-        ending-= tmp2;
-        if(flag){
-            tmp = ending+tmp1+tmp2-1;
-            int l=0;
-            while(tmp >= ending)disk[tmp+bound] = disk[tmp],tmp--;
-        }
-        else if((k+1)==x){
-            flag = true;
-            bound = tmp1 + tmp2;
-            k++;
-            continue;
-        }
-        if(flag)arr1[k-1]=tmp1,arr2[k-1]=tmp2;
-        else arr1[k]=tmp1,arr2[k]=tmp2;
-        k++;
-    }
-    count -= 1;
-    i=2;
-    currbit=8;
-    k=0;
-    while(k < count)encode(arr1[k],currbit),encode(arr2[k],currbit),k++;
-    return true;
-}
-
-bool delete(byte* name){
+bool delete(diskinfo* vdisk, byte* name){
     ui len  = strlen(name);
     byte* buffer  = (byte*) malloc(sizeof(byte)*50);
-    fseek(f,2,SEEK_SET);
-    currbit = 8;
-    ui cnt = count;
+    fseek(vdisk->f,0,SEEK_SET);
+    vdisk->currBit = 8;
+    ui cnt = vdisk->count;
     ul ending = 2;
-    ui tmp;
-    ul tmpPos;
-    while(cnt--){
-        tmp = decode(currbit,f);
-        ending+=tmp;
-        ending+=decode(currbit,f);
-        if(tmp == len){
-            tmpPos = ftell(f);
-            fseek(f,-ending,SEEK_END);
-            fgets(buffer,len+1,f);
-            if(strncmp(buffer,name,len)==0)return view(count-cnt);
-            fseek(f,tmpPos,SEEK_SET);
+    ui tmp1;
+    ui tmp2;
+    // ul tmpPos1[2];
+    // ui tmpPos2[2];
+    while(cnt){
+        tmp1 = decode(vdisk);
+        if(!is_bit_set(vdisk)){
+            ending+= tmp1;
+            // printf("returnung\n");
+            increament_bit(vdisk);
+            continue;}
+        ui tmpPos1[2] = {ftell(vdisk->f),vdisk->currBit};
+        increament_bit(vdisk);
+        tmp2 = decode(vdisk);
+        ending+=tmp2+tmp1;
+        if(is_bit_set(vdisk) && tmp1 == len){
+            ui tmpPos2[2] = {ftell(vdisk->f),vdisk->currBit};
+            fseek(vdisk->f,-ending,SEEK_END);
+            fgets(buffer,tmp1+1,vdisk->f);
+            printf("strncmp %s %s tmp->%d len->%d cnt->%d\n",buffer,name,tmp1,len,cnt);
+            if(!strncmp(buffer,name,len)){
+                fseek(vdisk->f,tmpPos1[0],SEEK_SET);
+                vdisk->currBit = tmpPos1[1];
+                set_bit(vdisk,false);
+                fseek(vdisk->f,tmpPos2[0],SEEK_SET);
+                vdisk->currBit = tmpPos2[1];
+                set_bit(vdisk,false);
+                vdisk->count-=1;
+                return true;
+            }
+            fseek(vdisk->f,tmpPos2[0],SEEK_SET);
         }
+        increament_bit(vdisk);
+        cnt--;
     }
     return false;
 }

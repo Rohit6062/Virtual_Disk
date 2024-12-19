@@ -2,8 +2,8 @@ all: run
 
 comp = gcc
 
-final: main.o base.o add.o encode.o decode.o filescnt.o get.o ls.o user_command.o
-	$(comp) main.o base.o add.o encode.o decode.o filescnt.o get.o ls.o user_command.o -lm -o final
+final: main.o base.o add.o encode.o decode.o filescnt.o get.o ls.o user_command.o delete.o
+	$(comp) main.o base.o add.o encode.o decode.o filescnt.o get.o ls.o user_command.o delete.o -lm -o final
 
 main.o: main.c 
 	$(comp) -c main.c -o main.o

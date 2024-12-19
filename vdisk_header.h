@@ -35,3 +35,6 @@ void pb(byte);
 diskinfo* init(); 
 void save(FILE*);
 void accept(diskinfo*,byte*);
+void set_bit(diskinfo*,bool);
+void increament_bit(diskinfo* vdisk);
+bool is_bit_set(diskinfo* vdisk);

@@ -5,10 +5,11 @@ ul filesCnt(diskinfo* vdisk){
     ul curr=1;
     ul totalbits=0;
     ul output = 0;
-    while(curr!=0 && totalbits < vdisk->fileSize*8){
+    while(curr!=0 && totalbits < (vdisk->fileSize*8) ){
         curr = decode(vdisk);
         totalbits += ((curr*8) + getBitReq(curr));
-        output++;
+        if(is_bit_set(vdisk))output++;
+        increament_bit(vdisk);
     }
     return output/2;
 }

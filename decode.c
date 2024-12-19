@@ -6,8 +6,18 @@ long decode(diskinfo* vdisk){
     long output=0;
     long toget = 2;
     if(vdisk->currBit<3){
-        if(vdisk->currBit==2) lvl = (3 & read) << 1 , read = getc(vdisk->f), lvl = lvl | (1 & (read >> 7)) , vdisk->currBit = 7;  
-        else lvl =  (1 & read) << 2 , read = getc(vdisk->f) , lvl = lvl | (3 & (read >> 6)), vdisk->currBit = 6;
+        if(vdisk->currBit==2) {
+            lvl = (3 & read) << 1 ;
+            read = getc(vdisk->f);
+            lvl = lvl | (1 & (read >> 7)) ;
+            vdisk->currBit = 7;
+        }  
+        else {
+            lvl =  (1 & read) << 2 ;
+            read = getc(vdisk->f) ;
+            lvl = lvl | (3 & (read >> 6));
+            vdisk->currBit = 6;
+        }
     } 
     else lvl = 7 & (read >> (vdisk->currBit - 3)), vdisk->currBit= vdisk->currBit-3;
     if(!vdisk->currBit)vdisk->currBit=8,read = getc(vdisk->f);

@@ -31,6 +31,7 @@ void accept(diskinfo* vdisk, byte* cmd){
             char* name = strtok(NULL," ");
             if(!name)err();
             else if(!strcmp("insert",token)){
+                name[strlen(name)-1]=0;
                 FILE* fp = fopen(name,"r");
                 if(!fp)printf("No such File\n");
                 else if(add(vdisk,name,fp)==false)printf("Failed to Insert file\n");
