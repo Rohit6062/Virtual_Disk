@@ -1,6 +1,7 @@
 #include"vdisk_header.h"
 bool encode(diskinfo* vdisk,unsigned long val){
     // this function will encode the number put it in array from givin position and return postion till squence is inserted
+    // printf("%ld for output\n",val);
     unsigned long output = val;
     long bitreq = log_2(val);
     unsigned long lev=1;
@@ -16,6 +17,7 @@ bool encode(diskinfo* vdisk,unsigned long val){
     byte read = getc(vdisk->f);
     fseek(vdisk->f,-1,SEEK_CUR);
     read = (makeToget(8) << vdisk->currBit) & read;  
+    // pl(output);
     while(bitreq>7){
         putc(read | (output >> (bitreq - vdisk->currBit)),vdisk->f);
         read = 0;

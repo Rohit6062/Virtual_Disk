@@ -1,4 +1,7 @@
 #include"vdisk_header.h"
+void p_diskinfo(diskinfo* v){
+    printf("vdisk %p currBit %d val %d count %d fileSize %d\n",v->f,v->currBit,v->val,v->count,v->fileSize);
+}
 int main(){
     diskinfo* vdisk = init(); 
     printf("count = %d\n", vdisk->count);
@@ -9,6 +12,14 @@ int main(){
     byte* name = (byte*) calloc(sizeof(byte),50);
     // printf("add(vdisk->f,ls.c,fopen(ls.c,r)) = %d\n", add(vdisk,"ls.c",fopen("ls.c","r")));
     // printf("add(vdisk->f,ls.c,fopen(test,r)) = %d\n", add(vdisk,"text.txt",fopen("text.txt","r")));
+    // printf("add(vdisk->f,ls.c,fopen(test,r)) = %d\n", add(vdisk,"text.txt",fopen("text.txt","r")));
+    // printf("add(vdisk->f,ls.c,fopen(test,r)) = %d\n", add(vdisk,"text.txt",fopen("text.txt","r")));
+    // printf("add(vdisk->f,ls.c,fopen(test,r)) = %d\n", add(vdisk,"text.txt",fopen("text.txt","r")));
+    // printf("add(vdisk->f,ls.c,fopen(test,r)) = %d\n", add(vdisk,"text.txt",fopen("text.txt","r")));
+    // printf("add(vdisk->f,ls.c,fopen(test,r)) = %d\n", add(vdisk,"text.txt",fopen("text.txt","r")));
+    // printf("add(vdisk->f,ls.c,fopen(test,r)) = %d\n", add(vdisk,"text.txt",fopen("text.txt","r")));
+    // printf("add(vdisk->f,ls.c,fopen(test,r)) = %d\n", add(vdisk,"text.txt",fopen("text.txt","r")));
+    // printf("add(vdisk->f,ls.c,fopen(test,r)) = %d\n", add(vdisk,"text.txt",fopen("text.txt","r")));
     // printf("add(vdisk->f,ls.c,fopen(ls.c,r)) = %d\n", add(vdisk,"ls.c",fopen("ls.c","r")));
     // printf("add(vdisk->f,ls.c,fopen(ls.c,r)) = %d\n", add(vdisk,"ls.c",fopen("ls.c","r")));
     // printf("add(vdisk->f,ls.c,fopen(ls.c,r)) = %d\n", add(vdisk,"ls.c",fopen("ls.c","r")));
@@ -17,8 +28,11 @@ int main(){
     // printf("add(vdisk->f,ls.c,fopen(ls.c,r)) = %d\n", add(vdisk,"ls.c",fopen("ls.c","r")));
     // printf("add(vdisk->f,ls.c,fopen(ls.c,r)) = %d\n", add(vdisk,"ls.c",fopen("ls.c","r")));
     printf("delete(vdisk) = %d\n", delete(vdisk,"text.txt"));
+    printf("delete(vdisk) = %d\n", delete(vdisk,"text.txt"));
+    printf("delete(vdisk) = %d\n", delete(vdisk,"text.txt"));
     printf("delete(vdisk) = %d\n", delete(vdisk,"ls.c"));
     ls(vdisk);
+    p_diskinfo(vdisk);
     // get(vdisk,"ls.c");
 
     // while(inp)accept(vdisk,&inp);

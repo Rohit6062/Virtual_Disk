@@ -57,7 +57,9 @@ diskinfo* init(){
     vdisk->f = fopen("disk","r+");
     fseek(vdisk->f,0,SEEK_END);
     vdisk->fileSize = ftell(vdisk->f);
-    vdisk->count = filesCnt(vdisk);
+    int fi = filesCnt(vdisk);
+    vdisk->count = fi;
+    printf("filecount = %d\n",fi);
     fseek(vdisk->f,0,SEEK_SET);
     vdisk->currBit = 8;
     return vdisk;

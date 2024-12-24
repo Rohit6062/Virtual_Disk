@@ -17,7 +17,7 @@ bool is_bit_set(diskinfo* vdisk)
 
 // this function will set bit according to flag and increament the bit 
 void set_bit(diskinfo* vdisk,bool value){
-    byte map[8] = {254,253,251,247,139,223,191,127};
+    byte map[8] = {254,253,251,247,239,223,191,127};
     if(vdisk->currBit){
         byte read = fgetc(vdisk->f);
         vdisk->currBit = vdisk->currBit - 1; 
@@ -35,7 +35,6 @@ void set_bit(diskinfo* vdisk,bool value){
 }
 
 bool add(diskinfo* vdisk,byte* name,FILE* toadd){
-    printf("toadd = %p\n", toadd);
     fseek(vdisk->f,0,SEEK_SET);
     vdisk->currBit=8;
     int nlen = strlen(name);
